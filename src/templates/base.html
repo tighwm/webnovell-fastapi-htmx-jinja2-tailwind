@@ -2,13 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}
-  	
-  {% endblock %}</title>
+  <title>
+    {% block title %}
+    {% endblock %}
+  </title>
 </head>
 <body>
-{% block body %}
-	
-{% endblock %}
+
+  {% block body %}
+  {% endblock %}
+
+  {% block footer %}
+  {% endblock %}
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+          integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+          crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", (event) => {
+      document.body.addEventListener('htmx:beforeSwap', function (evt) {
+        if ([204, 422].indexOf(evt.detail.xhr.status) >= 0) {
+          // allow 422 responses to swap
+          // as we are using this as a signal
+          // that a form was submitted with bad data
+          // and want to rerender with the errors
+          //
+          // set isError to `false`
+          // to avoid error logging in console
+          evt.detail.shouldSwap = true;
+          evt.detail.isError = false;
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
