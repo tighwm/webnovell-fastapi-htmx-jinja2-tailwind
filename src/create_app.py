@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from core.models import db_helper
 
@@ -16,5 +17,10 @@ def create_app():
     app = FastAPI(
         default_response_class=HTMLResponse,
         lifespan=lifespan,
+    )
+    app.mount(
+        "/static",
+        StaticFiles(directory="static"),
+        name="static",
     )
     return app
