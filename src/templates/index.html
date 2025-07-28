@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Homepage
+  Homepage
 {% endblock %}
 
 {% block header %}
-	{% include 'components/header.html' %}
+  {% include 'components/header-for-non-auth.html' %}
 {% endblock %}
 
 {% block body %}
-
+  <div class="min-h-screen bg-gray-950">
+    <div class="container mx-auto px-4 py-2 max-w-6xl min-w-sm bg-gray-900 min-h-screen">
+      <div class="flex gap-4 overflow-x-scroll my-2 overflow-y-hidden scrollbar-hide
+      bg-gray-700 p-4 rounded-md">
+        {% for foo in range(15) %}
+          {% include 'components/novell-card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
