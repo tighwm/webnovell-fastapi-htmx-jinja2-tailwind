@@ -1,0 +1,46 @@
+{% extends 'auth/base.html' %}
+
+{% block form %}
+  <form>
+    <div class="mb-4">
+      <label for="username" class="sr-only">Username</label>
+      <input
+        id="username"
+        type="text"
+        placeholder="Логин"
+        class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
+            focus:ring-blue-500 focus:outline-none transition duration-200"
+      >
+    </div>
+
+    <div class="mb-6">
+      <label for="password" class="sr-only">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="••••••••••••"
+        class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
+            focus:ring-blue-500 focus:outline-none transition duration-200"
+      >
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white
+          font-semibold py-3 px-4 rounded-xl mb-2 transition duration-200"
+    >
+      Войти
+    </button>
+  </form>
+
+  <div class="flex justify-center mb-4 text-blue-500 ">
+    <a href="{{ url_for('auth-register') }}" class="hover:text-blue-600">Или зарегистрироваться</a>
+  </div>
+
+  <div class="text-center">
+    <a href="#" class="text-blue-500 hover:text-blue-600 text-sm
+        transition duration-200">
+      Вы забыли пароль? Восстановить
+    </a>
+  </div>
+{% endblock %}

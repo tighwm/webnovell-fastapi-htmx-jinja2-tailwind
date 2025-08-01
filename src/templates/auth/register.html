@@ -1,0 +1,62 @@
+{% extends 'auth/base.html' %}
+
+{% block form %}
+  <form
+    id="registration-form"
+    hx-post="{{ url_for('auth-register-post') }}"
+    hx-push-url="true"
+    hx-target="body"
+  >
+    <div class="mb-4">
+      <label for="username" class="sr-only">Username</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        placeholder="Логин"
+        value="{% if username %}{{ username }}{% endif %}"
+        class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
+            focus:ring-blue-500 focus:outline-none transition duration-200
+             {% if username_err %}rounded-b-none{% endif %}"
+      >
+      {% if username_err %}
+        <div class="bg-red-50 text-red-500 text-sm px-4 py-2 rounded-b-xl border-t
+        border-red-100">
+          {{ username_err }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-6">
+      <label for="password" class="sr-only">Password</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        value="{% if password %}{{ password }}{% endif %}"
+        placeholder="••••••••••••"
+        class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
+            focus:ring-blue-500 focus:outline-none transition duration-200
+              {% if password_err %}rounded-b-none{% endif %}"
+      >
+      {% if password_err %}
+        <div class="bg-red-50 text-red-500 text-sm px-4 py-2 rounded-b-xl border-t
+        border-red-100">
+          {{ password_err }}
+        </div>
+      {% endif %}
+    </div>
+    <button
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white
+          font-semibold py-3 px-4 rounded-xl mb-4 transition duration-200"
+    >
+      Зарегистрироваться
+    </button>
+
+    <div class="flex justify-center text-blue-500 ">
+      <a href="{{ url_for('auth-login') }}" class="hover:text-blue-600">Уже есть аккаунт? Войти</a>
+    </div>
+  </form>
+
+{% endblock %}

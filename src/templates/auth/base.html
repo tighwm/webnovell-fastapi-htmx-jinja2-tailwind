@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Войти или зарегистрироваться
+  Войти или зарегистрироваться
 {% endblock %}
 
-{% block header %}
+{% block body %}
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="bg-gray-700 rounded-2xl shadow-xl p-8 w-102 max-w-md">
+
+      <div class="flex mb-8 justify-center font-bold text-white text-4xl">
+        <a href="{{ url_for('home') }}">WebNovel</a>
+      </div>
+      {% block form %}
+      {% endblock %}
+    </div>
+  </div>
 {% endblock %}

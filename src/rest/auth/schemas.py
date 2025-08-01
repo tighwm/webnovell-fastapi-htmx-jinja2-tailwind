@@ -1,0 +1,30 @@
+import re
+
+from pydantic import BaseModel, field_validator
+
+
+class RegistrationForm(BaseModel):
+    username: str
+    password: str
+
+    @field_validator("username")
+    @classmethod
+    def validate_username(cls, v):
+        if len(v) < 5 or len(v) > 16:
+            raise ValueError("Логин должен быть длиной между 5 и 16 символами.")
+        if not re.match(r"^[a-zA-Z][a-zA-Z\d_]*$", v):
+            raise ValueError("Разрешены только латиница, цифры и подчеркивания.")
+        return v
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError("Пароль должен содержать минимум 6 символов.")
+        if not re.search(r"[a-z]", v):
+            raise ValueError("Пароль должен содержать хотя бы одну строчную букву.")
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Пароль должен содержать хотя бы одну заглавную букву.")
+        if not re.search(r"\d", v):
+            raise ValueError("Пароль должен содержать хотя бы одну цифру.")
+        return v
