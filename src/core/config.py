@@ -37,7 +37,6 @@ class LoggingConfig(BaseModel):
         return logging.getLevelNamesMapping()[self.log_level.upper()]
 
 
-
 class DatabaseConfig(BaseModel):
     url: PostgresDsn
     echo: bool = False
@@ -52,6 +51,7 @@ class DatabaseConfig(BaseModel):
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "pk": "pk_%(table_name)s",
     }
+
 
 class AuthJWT(BaseModel):
     private_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
