@@ -1,12 +1,13 @@
-<div class="bg-gray-800 text-white p-4 min-w-sm">
-  <div class="flex justify-between items-center">
-    <div class="flex items-center gap-6">
-      <a href="{{ url_for('home') }}" class="text-xl font-bold">WebNovel</a>
-    </div>
-
-    <div class="flex items-center gap-4">
-      {% block right_items %}
-      {% endblock %}
-    </div>
+<div class="bg-gray-800 text-white h-14 min-w-sm flex justify-between
+            items-center px-4"
+>
+  <div class="flex items-center gap-6">
+    <a href="{{ url_for('home') }}" class="text-xl font-bold">WebNovel</a>
   </div>
+
+  <div class="flex items-center gap-4">
+    {% block right_items %}
+    {% endblock %}
+  </div>
+
 </div>

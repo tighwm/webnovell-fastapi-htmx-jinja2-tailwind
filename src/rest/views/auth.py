@@ -1,12 +1,16 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Request, Form, status
+from fastapi import APIRouter, Request, Form, status, Depends
 from fastapi.responses import RedirectResponse
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from rest.auth.service import validate_form
+from rest.services import auth as auth_serv
 from utils.templates import templates
+from core.models import db_helper
 
 router = APIRouter(prefix="/auth")
+
+COOKIE_SESSION_ID = "_session_id"
 
 
 @router.get("/login", name="auth-login")
@@ -33,15 +37,23 @@ async def index_register(request: Request):
 @router.post("/register", name="auth-register-post")
 async def handle_register(
     request: Request,
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
     username: Annotated[str, Form()],
     password: Annotated[str, Form()],
 ):
     ctx = {"username": username, "password": password}
-    if not validate_form(ctx):
+    if not auth_serv.validate_form(ctx):
         return templates.TemplateResponse(
             request=request,
             name="auth/register.html",
             context=ctx,
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )
-    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+    user_session = await auth_serv.register(user_in=ctx, session=session)
+    response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(
+        key=COOKIE_SESSION_ID,
+        value=str(user_session.jti),
+        httponly=True,
+    )
+    return response
