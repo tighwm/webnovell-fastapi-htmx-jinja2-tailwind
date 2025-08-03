@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="flex justify-center items-center text-white min-h-screen gap-4">
+    <div class="text-6xl ">404</div>
+    <div>
+      <div>Страница не найдена.
+      </div>
+      <div>
+        Вернуться на <a href="{{ url_for('home') }}" class="text-sky-700 hover:underline">
+        главную страницу.</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
