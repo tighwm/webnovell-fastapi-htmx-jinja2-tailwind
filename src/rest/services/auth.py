@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
 from core.models import UserSession, db_helper
-from core.security.passwords import hash_password
+from core.security.passwords import hash_password, validate_password
 from rest.schemas.user import RegistrationForm
 from rest.cruds import user as user_crud, session as session_crud
 
@@ -26,6 +26,25 @@ def validate_form(data):
             data[f"{field[0]}_err"] = msg[2]
         return False
     return True
+
+
+async def login(
+    username: str,
+    password: str,
+    session: AsyncSession,
+) -> UserSession | None:
+    user = await user_crud.get_by_username(
+        session=session,
+        username=username,
+    )
+    if user is None:
+        return None
+    if not validate_password(password, user.hashed_password):  # type: ignore
+        return None
+
+    jti = uuid.uuid4()
+    user_session = await session_crud.create(session=session, jti=jti, user_id=user.id)  # type: ignore
+    return user_session
 
 
 async def register(

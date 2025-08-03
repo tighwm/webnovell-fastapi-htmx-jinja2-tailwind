@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>
     {% block title %}
     {% endblock %}
@@ -25,7 +26,7 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", (event) => {
         document.body.addEventListener('htmx:beforeSwap', function (evt) {
-            if ([204, 422].indexOf(evt.detail.xhr.status) >= 0) {
+            if ([204, 422, 401].indexOf(evt.detail.xhr.status) >= 0) {
                 // allow 422 responses to swap
                 // as we are using this as a signal
                 // that a form was submitted with bad data

@@ -1,11 +1,17 @@
 {% extends 'auth/base.html' %}
 
 {% block form %}
-  <form>
+  <form
+    id="login-form"
+    hx-post="{{ url_for('auth-login-post') }}"
+    hx-push-url="true"
+    hx-target="body"
+  >
     <div class="mb-4">
       <label for="username" class="sr-only">Username</label>
       <input
         id="username"
+        name="username"
         type="text"
         placeholder="Логин"
         class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
@@ -17,6 +23,7 @@
       <label for="password" class="sr-only">Password</label>
       <input
         id="password"
+        name="password"
         type="password"
         placeholder="••••••••••••"
         class="w-full px-4 py-3 bg-amber-50 border-0 rounded-xl  focus:ring-2
@@ -31,6 +38,12 @@
     >
       Войти
     </button>
+    {% if err %}
+      <div class="bg-red-50 text-red-500 text-sm px-4 py-2 rounded-xl border-t
+        border-red-100">
+        {{ err }}
+      </div>
+    {% endif %}
   </form>
 
   <div class="flex justify-center mb-4 text-blue-500 ">

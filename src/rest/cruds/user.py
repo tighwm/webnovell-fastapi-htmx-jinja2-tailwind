@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
@@ -17,3 +18,12 @@ async def create(
         return None
     await session.refresh(user_orm)
     return user_orm
+
+
+async def get_by_username(
+    session: AsyncSession,
+    username: str,
+) -> User | None:
+    stmt = select(User).where(User.username == username)
+    user = await session.scalar(stmt)
+    return user
