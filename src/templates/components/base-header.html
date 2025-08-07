@@ -2,7 +2,16 @@
             items-center px-4"
 >
   <div class="flex items-center gap-6">
-    <a href="{{ url_for('home') }}" class="text-xl font-bold">WebNovel</a>
+    <a href="{{ url_for('home') }}" class="text-2xl font-bold">WebNovel</a>
+    <label for="search-bar" class="sr-only"></label>
+    <input
+      hx-get="#"
+      hx-trigger="keyup changed delay:500ms"
+      id="search-bar"
+      name="value"
+      type="text"
+      placeholder="Поиск новелл..."
+      class="bg-gray-700 rounded-md text-sm px-2 border-0 focus:outline-none h-8 w-64">
   </div>
 
   <div class="flex items-center gap-4">
