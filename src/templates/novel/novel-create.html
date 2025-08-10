@@ -5,5 +5,71 @@
 {% endblock %}
 
 {% block in_container %}
+  <div class="text-gray-300">
+    <h1 class="font-bold text-2xl mb-8 text-center">Создание новеллы</h1>
+    <form
+      id="novel-form"
+      hx-post="{{ url_for('create-novel') }}"
+      hx-encoding="multipart/form-data"
+      class="space-y-6"
+      hx-swap="none"
+    >
+      <div>
+        <label for="title" class="block text-sm font-medium mb-2">
+          Название новеллы*
+        </label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          required
+          placeholder="Название..."
+          class="bg-gray-700 rounded-md text-sm px-3 py-2 border-0
+          focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+        <p class="text-sm font-medium mb-2">
+          Обложка новеллы
+        </p>
+      <div>
+        <div class="flex items-center space-x-3">
+          <label
+            for="img"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer
+            transition-colors items-center text-sm font-medium"
+          >
+            Выбрать файл
+          </label>
+
+          <div class="flex-1 min-w-0">
+            <input
+              id="img"
+              name="img"
+              type="file"
+              accept="image/*"
+              class="block w-68 text-sm text-gray-400
+               file:hidden bg-gray-700 border border-gray-600 rounded-md
+               px-3 py-2 h-9 pointer-events-none"
+            >
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-500 mt-2">
+          Рекомендуемое соотношение сторон: 3:4 (например, 600x800px)
+        </p>
+      </div>
+
+      <div class="pt-4">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white
+          font-medium py-2 px-4 rounded-md transition-colors focus:outline-none
+          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+        >
+          Создать новеллу
+        </button>
+      </div>
+    </form>
+  </div>
 
 {% endblock %}

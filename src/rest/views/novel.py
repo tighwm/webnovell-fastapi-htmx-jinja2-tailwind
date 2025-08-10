@@ -18,6 +18,11 @@ async def handle_create_novel_index(request: Request):
     )
 
 
+@router.post("/new", name="create-novel")
+async def handle_create_novel(request: Request):
+    print(await request.form())
+
+
 @router.get("/{novel_id}")
 async def handle_novel_index(
     request: Request,
