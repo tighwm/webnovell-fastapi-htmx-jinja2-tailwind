@@ -16,6 +16,13 @@ LOG_DEFAULT_FORMAT = (
 )
 
 
+class MinioConfig(BaseModel):
+    host: str
+    access_key: str
+    secret_key: str
+    secure: bool = False
+
+
 class RunConfig(BaseModel):
     host: str = "0.0.0.0"
     port: int = 8000
@@ -75,6 +82,8 @@ class Settings(BaseSettings):
     jwt: AuthJWT = AuthJWT()
 
     db: DatabaseConfig
+
+    minio: MinioConfig
 
 
 settings = Settings()
