@@ -51,8 +51,7 @@ async def register(
     user_in: dict[str, str],
     session: AsyncSession,
 ) -> UserSession:
-    password = user_in.pop("password")
-    user_in["hashed_password"] = hash_password(password)
+    user_in.password = hash_password(user_in.password)
     user = await user_crud.create(
         user_in=user_in,
         session=session,

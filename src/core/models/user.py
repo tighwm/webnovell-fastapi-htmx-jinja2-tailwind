@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class User(Base, IdIntPkMixin):
     username: Mapped[str] = mapped_column(nullable=False, unique=True, index=True)
-    hashed_password: Mapped[str] = mapped_column(nullable=False)
+    password: Mapped[str] = mapped_column(nullable=False)
 
     user_sessions: Mapped[list["UserSession"]] = relationship(back_populates="user")
 
