@@ -2,30 +2,15 @@ import uuid
 from typing import Annotated
 
 from fastapi import Depends
-from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
 from core.models import UserSession, db_helper
 from core.security.passwords import hash_password, validate_password
-from rest.schemas.user import RegistrationForm
 from rest.cruds import user as user_crud, session as session_crud
+from rest.schemas.user import RegistrationForm
 
 COOKIE_SESSION_ID = "_session_id"
-
-
-def validate_form(data):
-    try:
-        RegistrationForm(**data)
-    except ValidationError as e:
-        errs = e.errors()
-        for err in errs:
-            field = err["loc"]
-            msg = err["msg"]
-            msg = msg.split(maxsplit=2)
-            data[f"{field[0]}_err"] = msg[2]
-        return False
-    return True
 
 
 async def login(
@@ -48,7 +33,7 @@ async def login(
 
 
 async def register(
-    user_in: dict[str, str],
+    user_in: RegistrationForm,
     session: AsyncSession,
 ) -> UserSession:
     user_in.password = hash_password(user_in.password)

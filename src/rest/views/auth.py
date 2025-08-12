@@ -1,4 +1,3 @@
-from http.client import responses
 from typing import Annotated
 
 from fastapi import APIRouter, Request, Form, status, Depends
@@ -6,6 +5,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from rest.services import auth as auth_serv
+from rest.schemas.user import RegistrationForm
 from utils.templates import templates
 from core.models import db_helper
 
@@ -66,19 +66,18 @@ async def index_register(request: Request):
 async def handle_register(
     request: Request,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
 ):
-    ctx = {"username": username, "password": password}
-    if not auth_serv.validate_form(ctx):
+    form = await request.form()
+    form = RegistrationForm.validate_form(form)
+    if form.errors:
         return templates.TemplateResponse(
             request=request,
             name="auth/register.html",
-            context=ctx,
+            context={"form": form},
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )
     user_session = await auth_serv.register(
-        user_in=ctx,
+        user_in=form,
         session=session,
     )
     response = RedirectResponse(

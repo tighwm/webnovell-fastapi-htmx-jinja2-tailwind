@@ -3,13 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
 from core.models import User
+from rest.schemas.user import RegistrationForm
 
 
 async def create(
     session: AsyncSession,
-    user_in: dict[str, str],
+    user_in: RegistrationForm,
 ) -> User | None:
-    user_orm = User(**user_in)
+    user_orm = User(**user_in.model_dump(exclude_none=True))
     session.add(user_orm)
     try:
         await session.flush()

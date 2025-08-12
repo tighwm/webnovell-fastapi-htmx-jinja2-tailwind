@@ -2,8 +2,10 @@ import re
 
 from pydantic import BaseModel, field_validator, ConfigDict
 
+from rest.schemas.form import BaseForm
 
-class RegistrationForm(BaseModel):
+
+class RegistrationForm(BaseForm):
     username: str
     password: str
 
