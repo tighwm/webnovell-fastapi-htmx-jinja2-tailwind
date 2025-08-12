@@ -1,0 +1,13 @@
+{% extends 'novel/base.html' %}
+
+{% block title %}
+  Добавить новеллу
+{% endblock %}
+
+{% block in_container %}
+  <div class="text-gray-300">
+    <h1 class="font-bold text-2xl mb-8 text-center">Создание новеллы</h1>
+      {% include 'novel/components/creating-form.html' %}
+  </div>
+
+{% endblock %}

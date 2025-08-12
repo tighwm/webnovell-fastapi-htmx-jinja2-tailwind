@@ -1,0 +1,79 @@
+<form
+  id="novel-form"
+  hx-post="{{ url_for('create-novel') }}"
+  hx-encoding="multipart/form-data"
+  class="space-y-6"
+  hx-swap="outerHTML"
+>
+  <div>
+    <label for="title" class="block text-sm font-medium mb-2">
+      Название новеллы*
+    </label>
+    <input
+      id="title"
+      name="title"
+      type="text"
+      value="{{ form.title }}"
+      required
+      placeholder="Название..."
+      class="bg-gray-700 rounded-md text-sm px-3 py-2 border-0
+          focus:outline-none focus:ring-2 focus:ring-blue-500
+          {% if form.errors.title %}rounded-b-none{% endif %}"
+    >
+    {% if form.errors.title %}
+      <div class="bg-gray-600 text-red-200 text-sm px-4 py-2 rounded-b-md
+        border-red-100">
+        {{ form.errors.title}}
+      </div>
+    {% endif %}
+  </div>
+
+  <p class="text-sm font-medium mb-2">
+    Обложка новеллы
+  </p>
+  <div>
+    <div class="flex items-center space-x-3">
+      <label
+        for="img"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer
+            transition-colors items-center text-sm font-medium"
+      >
+        Выбрать файл
+      </label>
+
+      <div class="flex min-w-0">
+        <input
+          id="img"
+          name="img"
+          type="file"
+          accept="image/*"
+          class="block w-68 text-sm text-gray-400
+               file:hidden bg-gray-700 border border-gray-600 rounded-md
+               px-3 py-2 h-9 pointer-events-none
+               {% if form.errors.img %}rounded-r-none{% endif %}"
+        >
+        {% if form.errors.img %}
+          <div class="bg-gray-600 text-red-200 text-sm px-4 py-2 rounded-r-md h-9
+                  border-red-100 w-68">
+            {{ form.errors.img }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <p class="text-xs text-gray-500 mt-2">
+      Соотношение сторон: 3:4 (например, 600x800px)
+    </p>
+  </div>
+
+  <div class="pt-4">
+    <button
+      type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white
+          font-medium py-2 px-4 rounded-md transition-colors focus:outline-none
+          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+    >
+      Создать новеллу
+    </button>
+  </div>
+</form>
