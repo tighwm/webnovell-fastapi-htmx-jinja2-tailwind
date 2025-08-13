@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import db_helper
 from utils import templates, minio_helper
 from rest.services import novel as novel_serv, auth as auth_serv
+from rest.cruds import novel as novel_crud
 from rest.schemas.novel import NovelForm
 from utils.loggers import log_handler
 
@@ -70,8 +71,14 @@ async def handle_create_novel(
 @log_handler(log)
 async def handle_search(
     q: str,
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    print(q)
+    print(
+        await novel_crud.search_novels_by_title(
+            session=session,
+            title=q,
+        )
+    )
 
 
 @router.get("/{novel_id}", name="novel-page")

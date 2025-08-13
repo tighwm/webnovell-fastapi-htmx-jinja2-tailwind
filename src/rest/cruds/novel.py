@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from core.models import Novel
 from rest.schemas.novel import NovelToDB
@@ -19,3 +20,12 @@ async def create(
     session.add(novel)
     await session.flush()
     return novel
+
+
+async def search_novels_by_title(
+    session: AsyncSession,
+    title: str,
+):
+    stmt = select(Novel).where(Novel.title.bool_op("%")(title.lower()))
+    result = await session.execute(stmt)
+    return result.scalars().all()
