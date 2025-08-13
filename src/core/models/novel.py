@@ -13,8 +13,12 @@ class Novel(Base, IdIntPkMixin):
 
     __table_args__ = (
         Index(
-            "ix_novel_titles_search",
-            text("to_tsvector('russian'::regconfig, title)"),
+            "ix_novel_title_trgm",
+            text("lower(title)"),
             postgresql_using="gin",
+            postgresql_ops={"lower(title)": "gin_trgm_ops"},
         ),
     )
+
+    def __repr__(self):
+        return f"Novel(title: {self.title})"
