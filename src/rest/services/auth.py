@@ -47,7 +47,7 @@ async def register(
 
 async def get_user_by_user_session(
     request: Request,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    session: AsyncSession,
 ):
     session_id: str | None = request.cookies.get(COOKIE_SESSION_ID)
     if not session_id:

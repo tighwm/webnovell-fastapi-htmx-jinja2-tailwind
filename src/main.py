@@ -1,8 +1,15 @@
+import logging
+
 import uvicorn
 
 from create_app import create_app
 from rest import router as rest_router
 from core.config import settings
+
+logging.basicConfig(
+    level=settings.logging.log_level_value,
+    format=settings.logging.log_format,
+)
 
 main_app = create_app()
 

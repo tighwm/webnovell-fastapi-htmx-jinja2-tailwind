@@ -1,8 +1,9 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Request, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import User
+from core.models import db_helper
 from rest.services.auth import get_user_by_user_session
 from rest.views.auth import router as auth_router, COOKIE_SESSION_ID
 from rest.views.user import router as user_router
@@ -16,8 +17,9 @@ router = APIRouter()
 @router.get("/", name="home")
 async def index_page(
     request: Request,
-    user: Annotated[User | None, Depends(get_user_by_user_session)],
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
+    user = await get_user_by_user_session(request, session)
     if user is None:
         return templates.TemplateResponse(
             request=request,
