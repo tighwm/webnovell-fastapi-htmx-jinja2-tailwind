@@ -9,7 +9,7 @@ from core.models.mixins.id_pk_int_mixin import IdIntPkMixin
 
 class Novel(Base, IdIntPkMixin):
     title: Mapped[str] = mapped_column(nullable=False)
-    obj_cover_name: Mapped[uuid.UUID] = mapped_column()
+    obj_cover_name: Mapped[uuid.UUID | None] = mapped_column(nullable=True)
 
     __table_args__ = (
         Index(
