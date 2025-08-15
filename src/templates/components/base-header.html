@@ -1,17 +1,27 @@
 <div class="bg-gray-800 text-white h-14 min-w-sm flex justify-between
-            items-center px-4"
+            items-center px-4 sticky z-70"
 >
   <div class="flex items-center gap-6">
     <a href="{{ url_for('home') }}" class="text-2xl font-bold">WebNovel</a>
-    <label for="search-bar" class="sr-only"></label>
-    <input
-      hx-get="{{ url_for('novel-search') }}"
-      hx-trigger="keyup changed delay:500ms"
-      id="search-bar"
-      name="q"
-      type="text"
-      placeholder="Поиск новелл..."
-      class="bg-gray-700 rounded-md text-sm px-2 border-0 focus:outline-none h-8 w-64">
+    <div class="relative">
+      <label for="search-bar" class="sr-only"></label>
+      <input
+        hx-get="{{ url_for('novel-search') }}"
+        hx-trigger="keyup changed delay:500ms"
+        hx-target="#search-results"
+        id="search-bar"
+        name="q"
+        type="text"
+        placeholder="Поиск новелл..."
+        class="bg-gray-700 rounded-md text-sm px-2 border-0 focus:outline-none h-8 w-64">
+      <div
+        id="search-results"
+        class="absolute top-10 min-w-84 p-4 -left-10 mt-1 bg-gray-900 rounded-md shadow-lg z-50
+      max-h-96 overflow-y-auto hidden border-1 border-gray-800"
+      >
+        <!-- Результаты от HTMX будут здесь -->
+      </div>
+    </div>
   </div>
 
   <div class="flex items-center gap-4">
@@ -20,3 +30,33 @@
   </div>
 
 </div>
+<script>
+    // Закрытие результатов при клике вне области
+    document.addEventListener('click', function (e) {
+        const searchContainer = e.target.closest('.relative');
+        const resultsContainer = document.getElementById('search-results');
+
+        if (!searchContainer && resultsContainer) {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+    // Показать результаты когда они загружены
+    document.body.addEventListener('htmx:afterSwap', function (e) {
+        if (e.detail.target.id === 'search-results') {
+            const resultsContainer = document.getElementById('search-results');
+            const hasContent = resultsContainer.children.length > 0;
+
+            if (hasContent) {
+                resultsContainer.classList.remove('hidden');
+            } else {
+                resultsContainer.classList.add('hidden');
+            }
+        }
+    });
+    // Скрыть результаты при очистке поля
+    document.querySelector('input[name="q"]').addEventListener('input', function (e) {
+        if (e.target.value.length === 0) {
+            document.getElementById('search-results').classList.add('hidden');
+        }
+    });
+</script>

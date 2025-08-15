@@ -1,0 +1,13 @@
+<div id="received-result" class="space-y-3">
+  {% if res %}
+    {% for novel in res %}
+      <a href="{{ url_for('novel-page', novel_id=novel.id) }}"
+         class="hover:cursor-pointer transition duration-300 hover:bg-gray-700
+         block bg-gray-800 rounded-lg p-2">
+        {{ novel.title }}
+      </a>
+    {% endfor %}
+  {% else %}
+    <div>Нет результатов по запросу.</div>
+  {% endif %}
+</div>

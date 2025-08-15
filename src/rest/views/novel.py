@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Request, Depends, status
+from fastapi import APIRouter, Request, Depends, status, Response
 from miniopy_async import Minio
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -70,14 +70,18 @@ async def handle_create_novel(
 @router.get("/search", name="novel-search")
 @log_handler(log)
 async def handle_search(
+    request: Request,
     q: str,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    print(
-        await novel_crud.search_novels_by_title(
-            session=session,
-            title=q,
-        )
+    res = await novel_crud.search_novels_by_title(
+        session=session,
+        title=q,
+    )
+    return templates.TemplateResponse(
+        request=request,
+        name="novel/components/search-result.html",
+        context={"res": res},
     )
 
 
