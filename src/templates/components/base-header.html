@@ -1,5 +1,5 @@
-<div class="bg-gray-800 text-white h-14 min-w-sm flex justify-between
-            items-center px-4 sticky z-70"
+<header class="sticky top-0 z-70 bg-gray-800 text-white h-14 w-full flex justify-between
+            items-center px-4"
 >
   <div class="flex items-center gap-6">
     <a href="{{ url_for('home') }}" class="text-2xl font-bold">WebNovel</a>
@@ -29,7 +29,7 @@
     {% endblock %}
   </div>
 
-</div>
+</header>
 <script>
     // Закрытие результатов при клике вне области
     document.addEventListener('click', function (e) {
