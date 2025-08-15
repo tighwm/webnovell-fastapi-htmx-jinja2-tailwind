@@ -4,6 +4,7 @@ from datetime import timedelta
 from miniopy_async import Minio
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.models import Novel
 from rest.schemas.novel import NovelForm, NovelToDB
 from rest.cruds import novel as novel_crud
 
@@ -38,11 +39,13 @@ async def get_novel(
     session: AsyncSession,
     minio: Minio,
     novel_id: int,
-):
+) -> Novel | None:
     novel = await novel_crud.get_novel_by_id(
         session=session,
         novel_id=novel_id,
     )
+    if novel is None:
+        return novel
     if novel.obj_cover_name:
         cover_url = await minio.presigned_get_object(
             bucket_name="novel-cover",

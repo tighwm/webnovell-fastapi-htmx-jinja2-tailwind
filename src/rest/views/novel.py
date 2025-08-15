@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Request, Depends, status, Response
+from fastapi import APIRouter, Request, Depends, status
 from miniopy_async import Minio
 from sqlalchemy.ext.asyncio import AsyncSession
 
