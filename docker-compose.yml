@@ -1,19 +1,35 @@
 services:
+  app:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    environment:
+      APP_CONFIG__DB__URL: "postgresql+asyncpg://webnovel:password@pg:5432/webnovel"
+    ports:
+      - "8000:8000"
+    depends_on:
+      pg:
+        condition: service_healthy
+
   pg:
     image: postgres
     environment:
       POSTGRES_DB: webnovel
       POSTGRES_USER: webnovel
       POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"  # for external connection
+#    ports:
+#      - "5432:5432"  # for external connection
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
-  minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000"
-      - "9001:9001"  # for dev
-    environment:
-      MINIO_ROOT_USER: user
-      MINIO_ROOT_PASSWORD: minio123
+#  minio:
+#    image: minio/minio:latest
+#    command: server /data
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      MINIO_ROOT_USER: user
+#      MINIO_ROOT_PASSWORD: minio123

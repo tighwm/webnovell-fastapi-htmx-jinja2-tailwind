@@ -1,11 +1,9 @@
 import uuid
-from typing import Annotated
 
-from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
-from core.models import UserSession, db_helper
+from core.models import UserSession
 from core.security.passwords import hash_password, validate_password
 from rest.cruds import user as user_crud, session as session_crud
 from rest.schemas.user import RegistrationForm

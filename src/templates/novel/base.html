@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block header %}
-	{% include 'components/header-for-auth-user.html' %}
+  {% if user %}
+    {% include 'components/header-for-auth-user.html' %}
+  {% else %}
+    {% include 'components/header-for-non-auth.html' %}
+  {% endif %}
 {% endblock %}
 
 {% block body %}

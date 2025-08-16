@@ -83,7 +83,7 @@ class Settings(BaseSettings):
 
     db: DatabaseConfig
 
-    minio: MinioConfig
+    # minio: MinioConfig
 
 
 settings = Settings()

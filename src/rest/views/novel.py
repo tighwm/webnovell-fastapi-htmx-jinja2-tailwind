@@ -2,11 +2,12 @@ import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Request, Depends, status
-from miniopy_async import Minio
+
+# from miniopy_async import Minio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper
-from utils import templates, minio_helper
+from utils import templates
 from rest.services import novel as novel_serv, auth as auth_serv
 from rest.cruds import novel as novel_crud
 from rest.schemas.novel import NovelForm
@@ -42,7 +43,7 @@ async def handle_create_novel_index(
 @log_handler(log)
 async def handle_create_novel(
     request: Request,
-    minio: Annotated[Minio, Depends(minio_helper.minio_getter)],
+    # minio: Annotated[Minio, Depends(minio_helper.minio_getter)],
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
     form = await request.form()
@@ -56,7 +57,7 @@ async def handle_create_novel(
         )
     novel = await novel_serv.create_novel(
         session=session,
-        minio=minio,
+        # minio=minio,
         novel_in=form,
     )
     return templates.TemplateResponse(
@@ -91,23 +92,21 @@ async def handle_novel_index(
     request: Request,
     novel_id: int,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-    minio: Annotated[Minio, Depends(minio_helper.minio_getter)],
+    # minio: Annotated[Minio, Depends(minio_helper.minio_getter)],
 ):
     response_404 = templates.TemplateResponse(
         request=request,
         name="404.html",
         status_code=status.HTTP_404_NOT_FOUND,
     )
-    user = await auth_serv.get_user_by_user_session(request, session)
-    if user is None:
-        return response_404
     novel = await novel_serv.get_novel(
         session=session,
-        minio=minio,
+        # minio=minio,
         novel_id=novel_id,
     )
     if novel is None:
         return response_404
+    user = await auth_serv.get_user_by_user_session(request, session)
     return templates.TemplateResponse(
         request=request,
         name="novel/novel.html",
