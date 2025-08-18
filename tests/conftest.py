@@ -4,7 +4,6 @@ from pathlib import Path
 
 
 import pytest
-import pg8000.native
 from sqlalchemy import Connection
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from alembic.config import Config
@@ -22,46 +21,6 @@ here = Path(__file__).resolve()
 alembic_ini = here.parent.parent / "src" / "alembic.ini"
 
 
-def is_postgres_responsive(
-    host: str,
-    port: int,
-    user: str,
-    password: str,
-    db: str,
-):
-    def check():
-        try:
-            conn = pg8000.connect(
-                user=user,
-                host=host,
-                port=port,
-                password=password,
-                database=db,
-            )
-            conn.close()
-            return True
-        except Exception:
-            return False
-
-    return check
-
-
-@pytest.fixture(scope="session")
-async def wait_for_postgres(docker_services):
-
-    docker_services.wait_until_responsive(
-        timeout=30.0,
-        pause=1.0,
-        check=is_postgres_responsive(
-            user="webnovel_test",
-            host="localhost",
-            port=5432,
-            password="password",
-            db="webnovel_test",
-        ),
-    )
-
-
 def run_alembic_migration(
     conn: Connection,
     alembic_ini_path: Path = alembic_ini,
@@ -72,7 +31,7 @@ def run_alembic_migration(
 
 
 @pytest.fixture(scope="session")
-async def test_engine(wait_for_postgres):
+async def test_engine():
     engine = create_async_engine(
         url=str(settings.db.url),
         echo=False,
