@@ -10,6 +10,16 @@ RUN pip install --upgrade "uv==0.8.5"
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev
 
+FROM builder as test
+
+RUN uv sync --locked
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+COPY . .
+
+CMD ["pytest"]
+
 FROM python:3.13.6-slim AS production
 
 ENV PYTHONUNBUFFERED=1
