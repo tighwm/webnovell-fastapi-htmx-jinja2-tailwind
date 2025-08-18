@@ -39,7 +39,9 @@ jobs:
         run: docker build --target test -t webnovel-test .
 
       - name: Run tests in container
-        run: docker run --rm webnovel-test
+        run: docker run --rm \
+          --network host \
+          webnovel-test
 
 
   deploy:
