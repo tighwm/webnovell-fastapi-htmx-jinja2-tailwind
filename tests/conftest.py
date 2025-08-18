@@ -31,7 +31,7 @@ def run_alembic_migration(
 
 
 @pytest.fixture(scope="session")
-async def test_engine(wait_for_postgres):
+async def test_engine():
     engine = create_async_engine(
         url=str(settings.db.url),
         echo=False,
