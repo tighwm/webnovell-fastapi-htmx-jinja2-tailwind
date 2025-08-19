@@ -10,7 +10,7 @@ RUN pip install --upgrade "uv==0.8.5"
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev
 
-FROM builder as test
+FROM builder AS test
 
 RUN uv sync --locked
 
@@ -34,6 +34,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 COPY src .
 
 RUN chmod +x entrypoint.sh
+
+EXPOSE 8000
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["python", "main.py"]

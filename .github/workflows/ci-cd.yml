@@ -81,7 +81,7 @@ jobs:
           response=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.DEPLOYHOOK_RENDER }})
 
           if [ $response -eq 200 ] || [ $response -eq 201 ]; then
-            echo "Deploy triggered triggered successfully: $response"
+            echo "Deploy triggered successfully: $response"
           else
             echo "Deploy failed with status: $response"
             exit 1

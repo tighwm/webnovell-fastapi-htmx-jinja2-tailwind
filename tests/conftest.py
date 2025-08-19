@@ -2,12 +2,13 @@ import os
 from unittest.mock import AsyncMock
 from pathlib import Path
 
-
 import pytest
 from sqlalchemy import Connection
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
 from alembic.config import Config
 from alembic import command
+
+from tests import database
 
 os.environ.update(
     {
@@ -30,8 +31,8 @@ def run_alembic_migration(
     command.upgrade(config, revision)
 
 
-@pytest.fixture(scope="session")
-async def test_engine():
+@pytest.fixture(scope="session", autouse=True)
+async def engine():
     engine = create_async_engine(
         url=str(settings.db.url),
         echo=False,
@@ -40,26 +41,16 @@ async def test_engine():
     async with engine.connect() as conn:
         await conn.run_sync(run_alembic_migration)
 
-    yield engine
+    database.async_scoped_session.configure(bind=engine)
+    yield
     await engine.dispose()
 
 
-@pytest.fixture(scope="session")
-async def session_maker(test_engine):
-    session_maker = async_sessionmaker(
-        bind=test_engine,
-        autoflush=False,
-        autocommit=False,
-        expire_on_commit=False,
-    )
-    return session_maker
-
-
 @pytest.fixture()
-async def test_session(session_maker):
-    async with session_maker() as session:
-        yield session
-        await session.rollback()
+async def test_session():
+    session = database.async_scoped_session()
+    yield session
+    await session.rollback()
 
 
 @pytest.fixture()
