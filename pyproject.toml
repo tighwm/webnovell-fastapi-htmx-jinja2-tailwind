@@ -21,6 +21,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "black>=25.1.0",
+    "factory-boy>=3.3.3",
+    "faker>=37.5.3",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
 ]
